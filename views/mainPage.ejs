@@ -13,12 +13,12 @@
                 $("#selectEndDate").attr('max', max);
                 $("#selectEndDate").attr('value', max);
             }
-            
+
             function selectDate() {
                 $.ajax({
                     url : "/mainPage/dateSelect",
                     type : "POST",
-                    data: JSON.stringify({ 
+                    data: JSON.stringify({
                         startDate: $("#selectStartDate").val(),
                         endDate: $("#selectEndDate").val()
                     }),
@@ -84,10 +84,53 @@
                 <td id="vehicleNum"></td>
             </tr>
         </table>
+        <script>
+
+        // "시간조회" 버튼 클릭 시 number form 생성
+          function timeInput(){
+            $("#addForm").empty();
+            $('#addForm').text("최근 ");
+            $('#addForm').append("<input type='number' min='1' max='24' id='selectTime' size=2 />");
+            $('#addForm').append(" 시간&emsp;")
+            $('#addForm').append("<button id='timeSubmit'>제출 </button>")
+          }
+
+          // "일간 조회" 버튼 클릭 시 date form 생성
+            function dayInput(){
+              $("#addForm").empty();
+              $('#addForm').append("<input type='date' id='selectDay' /> ");
+
+              $('#addForm').append("<button id='daySubmit'>제출 </button>")
+            }
+
+            // "기간 조회" 버튼 클릭 시 date form 2개 생성
+              function termInput(){
+                $("#addForm").empty();
+                $('#addForm').append("<input id='selectStartDate' type='date'> ~ ");
+
+                $('#addForm').append("<input id='selectEndDate' type='date'> ");
+                $('#addForm').append("<button id='dateSelectBtn'>제출 </button>")
+              }
+
+          </script>
+
+        <h2> 기간 별 데이터 조회 </h2>
         <div>
-            <input id="selectStartDate" type="date">
-            <input id="selectEndDate" type="date">
-            <button id="dateSelectBtn">기간 선택</button>
+
+
+          <input type="button" value="시간 조회" id="timeLookupBtn" onclick="timeInput()" />
+
+          <input type="button" id="dayLookupBtn" value="일간 조회" onclick="dayInput()" />
+          <input type="button" id="dateLookupBtn" value="기간 조회" onclick="termInput()" />
+
+
+          <div id="addForm"></div>
+        <br>
+        </div>
+        <div>
+            <!--input id="selectStartDate" type="date"!-->
+            <!--input id="selectEndDate" type="date"!-->
+            <!--button id="dateSelectBtn">기간 선택</button-->
         </div>
         <table id="showTermTable" border="1">
             <th></th>
