@@ -49,10 +49,6 @@
 
                 .done(function (json){
                     console.log(json);
-                    // $('td[name=startDate]').eq('0').text(json.start_date);
-                    // $('td[name=endDate]').eq('0').text(json.start_date);
-                    // $('td[name=peopleNum]').eq('0').text(json.start_date);
-                    // $('td[name=vehicleNum]').eq('0').text(json.start_date);
                     $('#startDate').text(json.end_date);
                     $('#endDate').text(json.end_date);
                     $('#peopleNum').text(json.people);
@@ -69,7 +65,7 @@
         </script>
     </head>
     <body>
-        <h1>show data</h1>
+        <h2>실시간 DATA</h2>
         <button id="refreshDataBtn">데이터 새로고침</button>
 
         <table id="showLatestTable" border="1">
@@ -84,6 +80,9 @@
                 <td id="vehicleNum"></td>
             </tr>
         </table>
+
+
+
         <script>
 
         // "시간조회" 버튼 클릭 시 number form 생성
@@ -114,7 +113,7 @@
 
           </script>
 
-        <h2> 기간 별 데이터 조회 </h2>
+        <h2>데이터 조회</h2>
         <div>
 
 
@@ -151,5 +150,69 @@
             refreshData();
             selectDate();
         </script>
+
+        <script>
+          //시작시간/종료시간을 지정하고, 수신한 데이터를 테이블로 표시 -- 서현
+          function showDataTable() {
+              $.ajax({
+                  url : "/mainPage/tableDatetimeSelect",
+                  type : "POST",
+                  data: JSON.stringify({
+                      startDate: $("#table_s_time").val(),
+                      endDate: $("#table_e_time").val()
+                  }),
+                  contentType: "application/json; charset=utf-8",
+              })
+
+              .done(function (json){
+                  console.log("!!!!!!!!!!!", json);
+                  console.log("json L :", json.length)
+                  console.log("json[34] :", json[34].start_date)
+
+                  //build Table
+                 var table = document.getElementById('table_body');
+                 for (var i=0; i < json.length; i++) {
+                    var row = `<tr>
+                                 <td>${json[i].start_date}</td>
+                                 <td>${json[i].end_date}</td>
+                                 <td>${json[i].people}</td>
+                                 <td>${json[i].vehicle}</td>
+                               </tr>`
+                                 table.innerHTML += row
+                               }
+                    })
+
+              .fail(function (xhr, status, errorThrown){
+                  alert("Failed");
+                  console.log(status);
+              });
+          }
+
+
+        </script>
+
+
+
+        <h2>Data Table</h2>
+        <div>
+          <input id='table_s_time' type='datetime-local' size=15 >
+          ~
+          <input id='table_e_time' type='datetime-local'>
+          <input type="button" id="datetime_submit_btn" value="조회" onclick="showDataTable()" />
+        </div>
+
+
+          <table class='dataList' border="1">
+            <tr>
+              <th>Start Time</th>
+              <th>End Time</th>
+              <th>People</th>
+              <th>Vehicle</th>
+            </tr>
+             <tbody id='table_body'> </tbody>
+          </table>
+
+
+
     </body>
 </html>

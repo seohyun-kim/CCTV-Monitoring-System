@@ -66,6 +66,20 @@ app.post('/mainPage/dateSelect', (req, res) => {
 });
 
 
+//시작시간/종료시간을 지정하고, 수신한 데이터를 테이블로 표시
+app.post('/mainPage/tableDatetimeSelect', (req, res) => {
+    var data = req.body;
+    var sql = 'SELECT * FROM test WHERE start_date >= ? and end_date <= ?'
+    conn.query(sql, [data.startDate, data.endDate], (err, row) => {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log(row);
+            res.json(row);
+        }
+    });
+});
+
 // Create Sample Data
 app.get('/createSampleData', (req, res) => {
     res.render('./createDataPage.ejs');
@@ -96,7 +110,7 @@ app.post('/createSampleData', (req, res) => {
             if (err) {
                 console.log(err);
             } else {
-                console.log('complete instert data');
+                console.log('complete insert data');
             }
         });
     });
