@@ -39,6 +39,7 @@ app.get('/mainPage', (req, res) => {
     });
 });
 
+// 데이터 새로고침
 app.post('/mainPage/refreshData', (req, res) => {
     console.log(req.body);
     var sql = 'select * from test order by id desc limit 1'
@@ -52,6 +53,8 @@ app.post('/mainPage/refreshData', (req, res) => {
     });
 });
 
+
+//합계 데이터 조회 - 기간 조회
 app.post('/mainPage/dateSelect', (req, res) => {
     var data = req.body;
     var sql = 'select sum(people), sum(vehicle) from test where start_date >= ? and end_date <= ?'
@@ -65,10 +68,40 @@ app.post('/mainPage/dateSelect', (req, res) => {
     });
 });
 
+//합계 데이터 조회 - 일간 조회
+app.post('/mainPage/dateSelect2', (req, res) => {
+    var data = req.body;
+    var sql = "select sum(people), sum(vehicle) from test WHERE start_date >= CONCAT(?,' 00:00:00') AND start_date <= CONCAT(?,' 23:59:59')";
+    conn.query(sql,[data._Date,data._Date], (err, row) => {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log(row);
+            res.json(row[0]); // sum(people), sum(vehicle)
+        }
+    });
+});
+
+//합계 데이터 조회 - 시간 조회
+app.post('/mainPage/timeSelect', (req, res) => {
+    var data = req.body;
+    var sql =  "select sum(people), sum(vehicle) from test WHERE start_date >= CONCAT(?,' ',?,':00') AND start_date <= CONCAT(?,' ',?,':00')";
+    conn.query(sql, [data.start_Date,data.startTime,data.end_Date,data.endTime], (err,row) => {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log(row);
+            res.json(row[0]); // sum(people), sum(vehicle)
+        }
+
+    });
+});
+
 
 //시작시간/종료시간을 지정하고, 수신한 데이터를 테이블로 표시
 app.post('/mainPage/tableDatetimeSelect', (req, res) => {
     var data = req.body;
+    console.log(data.startDate);
     var sql = 'SELECT * FROM test WHERE start_date >= ? and end_date <= ?'
     conn.query(sql, [data.startDate, data.endDate], (err, row) => {
         if (err) {
@@ -79,6 +112,7 @@ app.post('/mainPage/tableDatetimeSelect', (req, res) => {
         }
     });
 });
+
 
 // Create Sample Data
 app.get('/createSampleData', (req, res) => {

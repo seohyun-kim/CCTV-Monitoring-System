@@ -5,6 +5,7 @@
         <title>main page</title>
         <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
         <script type="text/javascript">
+
             function initSelectDateOption(min, max) {
                 $("#selectStartDate").attr('min', min);
                 $("#selectStartDate").attr('max', max);
@@ -14,39 +15,13 @@
                 $("#selectEndDate").attr('value', max);
             }
 
-            function selectDate() {
-                $.ajax({
-                    url : "/mainPage/dateSelect",
-                    type : "POST",
-                    data: JSON.stringify({
-                        startDate: $("#selectStartDate").val(),
-                        endDate: $("#selectEndDate").val()
-                    }),
-                    contentType: "application/json; charset=utf-8",
-                })
-
-                .done(function (json){
-                    console.log(json);
-                    $('#sumPeople').text(json['sum(people)']);
-                    $('#sumVehicle').text(json['sum(vehicle)']);
-                })
-
-                .fail(function (xhr, status, errorThrown){
-                    alert("Date Select Failed");
-                    console.log(status);
-                });
-            }
-            $(function() {
-                $("#dateSelectBtn").on("click", selectDate);
-            });
-
+            //데이터 새고로침
             function refreshData() {
                 $.ajax({
                     url : "/mainPage/refreshData",
                     type : "POST",
                     dataType : "JSON",
                 })
-
                 .done(function (json){
                     console.log(json);
                     $('#startDate').text(json.end_date);
@@ -62,7 +37,176 @@
             $(function() {
                 $("#refreshDataBtn").on("click", refreshData);
             });
+
+
+            //기간조회 입력 후 제출처리
+            function selectDate() {
+                $.ajax({
+                    url : "/mainPage/dateSelect",
+                    type : "POST",
+                    data: JSON.stringify({
+                        startDate: $("#selectStartDate").val(),
+                        endDate: $("#selectEndDate").val()
+                    }),
+                    contentType: "application/json; charset=utf-8",
+                })
+                .done(function (json){
+                    console.log(json);
+                    $('#sumPeople').text(json['sum(people)']);
+                    $('#sumVehicle').text(json['sum(vehicle)']);
+                })
+                .fail(function (xhr, status, errorThrown){
+                    alert("Date Select Failed");
+                    console.log(status);
+                });
+            }
+            $(function() {
+                $(document).on("click", "#dateSelectBtn", function(){
+                            selectDate();
+                    });
+            });
+
+            //일간 조회 입력 후 제출 처리
+            function selectDate2() {
+                $.ajax({
+                    url : "/mainPage/dateSelect2",
+                    type : "POST",
+                    data: JSON.stringify({
+
+                        _Date:$("#selectDate").val(),
+                    }),
+                    contentType: "application/json; charset=utf-8",
+                })
+                .done(function (json){
+                    console.log(json);
+                    $('#sumPeople').text(json['sum(people)']);
+                    $('#sumVehicle').text(json['sum(vehicle)']);
+                })
+                .fail(function (xhr, status, errorThrown){
+                    alert("Date Select Failed");
+                    console.log(status);
+                });
+            }
+            $(function() {
+                $(document).on("click", "#dateSelectBtn2", function(){
+                            selectDate2();
+                    });
+            });
+
+            //시간조회 입력 후 제출 처/
+            function selectTime() {
+                $.ajax({
+                    url : "/mainPage/timeSelect",
+                    type : "POST",
+                    data: JSON.stringify({
+                        start_Date:$("#selectStartDate2").val(),
+                        startTime:$("#selectStarttime").val(),
+                        end_Date: $("#selectEndDate2").val(),
+                        endTime: $("#selectEndtime").val(),
+
+                    }),
+                    contentType: "application/json; charset=utf-8",
+                })
+                .done(function (json){
+                    //console.log(json);
+                    $('#sumPeople').text(json['sum(people)']);
+                    $('#sumVehicle').text(json['sum(vehicle)']);
+                })
+                .fail(function (xhr, status, errorThrown){
+                    alert("Date Select Failed");
+                    console.log(status);
+                });
+            }
+            $(function() {
+                $(document).on("click", "#timeSelectBtn", function(){
+                    selectTime();
+                    });
+            });
+
+
         </script>
+
+        <script>
+        // "시간조회" 버튼 클릭 시 number form 생성
+          function timeInput(){
+            $('#sumPeople').text(' ');
+            $('#sumVehicle').text(' ');
+            $("#addForm").empty();
+            $('#addForm').append('<input id="selectStartDate2" type="date"> ~  ')
+            $('#addForm').append('<input id="selectEndDate2" type="date"> ')
+            $('#addForm').append('<input id="selectStarttime" type="time" size="10">  ')
+            $('#addForm').append('<input id="selectEndtime" type="time" size="10"> ')
+            $('#addForm').append('<button type="button" id="timeSelectBtn">시간 선택</button>')
+          }
+          // "일간 조회" 버튼 클릭 시 date form 생성
+            function dayInput(){
+              $('#sumPeople').text(' ');
+              $('#sumVehicle').text(' ');
+              $("#addForm").empty();
+              $('#addForm').append("<input id='selectDate' type='date'>");
+              $('#addForm').append("<button type='button' id='dateSelectBtn2'>제출 </button>")
+            }
+            // "기간 조회" 버튼 클릭 시 date form 2개 생성
+              function termInput(){
+                $('#sumPeople').text(' ');
+                $('#sumVehicle').text(' ');
+                $("#addForm").empty();
+                $('#addForm').append("<input id='selectStartDate' type='date'> ~ ");
+                $('#addForm').append("<input id='selectEndDate' type='date'> ");
+                $('#addForm').append("<button type='button' id='dateSelectBtn'>제출 </button>")
+              }
+          </script>
+
+          <script>
+            //시작시간/종료시간을 지정하고, 수신한 데이터를 테이블로 표시 -- 서현
+            function showDataTable() {
+                $.ajax({
+                    url : "/mainPage/tableDatetimeSelect",
+                    type : "POST",
+                    data: JSON.stringify({
+                        startDate: $("#table_s_time").val(),
+                        endDate: $("#table_e_time").val()
+                    }),
+                    contentType: "application/json; charset=utf-8",
+                })
+
+                .done(function (json){
+                    $("#table_body").empty();
+                    //build Table
+                   var table = document.getElementById('table_body');
+                   for (var i=0; i < json.length; i++) {
+                      var row = `<tr>
+                                   <td>${json[i].start_date}</td>
+                                   <td>${json[i].end_date}</td>
+                                   <td>${json[i].people}</td>
+                                   <td>${json[i].vehicle}</td>
+                                 </tr>`
+                                   table.innerHTML += row
+                                 }
+                      })
+
+                .fail(function (xhr, status, errorThrown){
+                    alert("Failed");
+                    console.log(status);
+                });
+            }
+            $(function() {
+                $("#datetime_submit_btn").on("click", showDataTable);
+            });
+
+
+          </script>
+
+          <script>
+              var data = JSON.parse('<%- JSON.stringify(data) %>');
+              var minDate = data['min(start_date)'].split(' ')[0];
+              var maxDate = data['max(end_date)'].split(' ')[0];
+              initSelectDateOption(minDate, maxDate);
+              refreshData();
+              selectDate();
+          </script>
+
+
     </head>
     <body>
         <h2>실시간 DATA</h2>
@@ -83,53 +227,18 @@
 
 
 
-        <script>
-
-        // "시간조회" 버튼 클릭 시 number form 생성
-          function timeInput(){
-            $("#addForm").empty();
-            $('#addForm').text("최근 ");
-            $('#addForm').append("<input type='number' min='1' max='24' id='selectTime' size=2 />");
-            $('#addForm').append(" 시간&emsp;")
-            $('#addForm').append("<button id='timeSubmit'>제출 </button>")
-          }
-
-          // "일간 조회" 버튼 클릭 시 date form 생성
-            function dayInput(){
-              $("#addForm").empty();
-              $('#addForm').append("<input type='date' id='selectDay' /> ");
-
-              $('#addForm').append("<button id='daySubmit'>제출 </button>")
-            }
-
-            // "기간 조회" 버튼 클릭 시 date form 2개 생성
-              function termInput(){
-                $("#addForm").empty();
-                $('#addForm').append("<input id='selectStartDate' type='date'> ~ ");
-
-                $('#addForm').append("<input id='selectEndDate' type='date'> ");
-                $('#addForm').append("<button id='dateSelectBtn'>제출 </button>")
-              }
-
-          </script>
-
-        <h2>데이터 조회</h2>
+        <h2>합계 데이터 조회</h2>
         <div>
 
-
           <input type="button" value="시간 조회" id="timeLookupBtn" onclick="timeInput()" />
-
           <input type="button" id="dayLookupBtn" value="일간 조회" onclick="dayInput()" />
           <input type="button" id="dateLookupBtn" value="기간 조회" onclick="termInput()" />
-
 
           <div id="addForm"></div>
         <br>
         </div>
         <div>
-            <!--input id="selectStartDate" type="date"!-->
-            <!--input id="selectEndDate" type="date"!-->
-            <!--button id="dateSelectBtn">기간 선택</button-->
+
         </div>
         <table id="showTermTable" border="1">
             <th></th>
@@ -142,55 +251,6 @@
             </tr>
         </table>
 
-        <script>
-            var data = JSON.parse('<%- JSON.stringify(data) %>');
-            var minDate = data['min(start_date)'].split(' ')[0];
-            var maxDate = data['max(end_date)'].split(' ')[0];
-            initSelectDateOption(minDate, maxDate);
-            refreshData();
-            selectDate();
-        </script>
-
-        <script>
-          //시작시간/종료시간을 지정하고, 수신한 데이터를 테이블로 표시 -- 서현
-          function showDataTable() {
-              $.ajax({
-                  url : "/mainPage/tableDatetimeSelect",
-                  type : "POST",
-                  data: JSON.stringify({
-                      startDate: $("#table_s_time").val(),
-                      endDate: $("#table_e_time").val()
-                  }),
-                  contentType: "application/json; charset=utf-8",
-              })
-
-              .done(function (json){
-                  console.log("!!!!!!!!!!!", json);
-                  console.log("json L :", json.length)
-                  console.log("json[34] :", json[34].start_date)
-
-                  //build Table
-                 var table = document.getElementById('table_body');
-                 for (var i=0; i < json.length; i++) {
-                    var row = `<tr>
-                                 <td>${json[i].start_date}</td>
-                                 <td>${json[i].end_date}</td>
-                                 <td>${json[i].people}</td>
-                                 <td>${json[i].vehicle}</td>
-                               </tr>`
-                                 table.innerHTML += row
-                               }
-                    })
-
-              .fail(function (xhr, status, errorThrown){
-                  alert("Failed");
-                  console.log(status);
-              });
-          }
-
-
-        </script>
-
 
 
         <h2>Data Table</h2>
@@ -198,10 +258,10 @@
           <input id='table_s_time' type='datetime-local' size=15 >
           ~
           <input id='table_e_time' type='datetime-local'>
-          <input type="button" id="datetime_submit_btn" value="조회" onclick="showDataTable()" />
+          <input type="button" id="datetime_submit_btn" value="조회"  />
         </div>
 
-
+        <div id='dataList'>
           <table class='dataList' border="1">
             <tr>
               <th>Start Time</th>
@@ -211,7 +271,7 @@
             </tr>
              <tbody id='table_body'> </tbody>
           </table>
-
+        </div>
 
 
     </body>

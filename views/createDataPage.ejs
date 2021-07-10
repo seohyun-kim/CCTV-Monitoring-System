@@ -13,7 +13,7 @@
                 $.ajax({
                     url : "/createSampleData",
                     type : "POST",
-                    data: JSON.stringify({ 
+                    data: JSON.stringify({
                         startDate: $("#selectStartDate").val(),
                         startTime: $("#selectStartTime").val(),
                         endDate: $("#selectEndDate").val(),
@@ -39,22 +39,24 @@
     </head>
     <body>
         <h1>Select Date and Time</h1>
-        
+
         <div>
             Start Time:
             <input id="selectStartDate" type="date">
             <select id="selectStartTime" size="1"></select>
+            시 ~
             <br>
             End Time:
             <input id="selectEndDate" type="date">
             <select id="selectEndTime" size="1"></select>
+            시 &emsp;
             <button id="dateSelectBtn">기간 선택</button>
         </div>
 
         <script>
            for (i = 0; i < 24; i++) {
                 setValueSelectById('selectStartTime', i);
-                setValueSelectById('selectEndTime', i);                
+                setValueSelectById('selectEndTime', i);
             }
             var now = new Date().toISOString().split('T')[0];
             console.log(now);
