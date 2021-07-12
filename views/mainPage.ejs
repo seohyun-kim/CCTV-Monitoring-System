@@ -4,8 +4,9 @@
         <meta charset="utf-8">
         <title>main page</title>
         <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script src="http://code.highcharts.com/highcharts.js"></script>
+        <script src="http://code.highcharts.com/modules/exporting.js"></script>
         <script type="text/javascript">
-
             function initSelectDateOption(min, max) {
                 $("#selectStartDate").attr('min', min);
                 $("#selectStartDate").attr('max', max);
@@ -14,7 +15,6 @@
                 $("#selectEndDate").attr('max', max);
                 $("#selectEndDate").attr('value', max);
             }
-
             //데이터 새고로침
             function refreshData() {
                 $.ajax({
@@ -29,7 +29,6 @@
                     $('#peopleNum').text(json.people);
                     $('#vehicleNum').text(json.vehicle);
                 })
-
                 .fail(function (xhr, status, errorThrown){
                     alert("Refresh Data Failed");
                 });
@@ -37,8 +36,6 @@
             $(function() {
                 $("#refreshDataBtn").on("click", refreshData);
             });
-
-
             //기간조회 입력 후 제출처리
             function selectDate() {
                 $.ajax({
@@ -65,14 +62,12 @@
                             selectDate();
                     });
             });
-
             //일간 조회 입력 후 제출 처리
             function selectDate2() {
                 $.ajax({
                     url : "/mainPage/dateSelect2",
                     type : "POST",
                     data: JSON.stringify({
-
                         _Date:$("#selectDate").val(),
                     }),
                     contentType: "application/json; charset=utf-8",
@@ -92,8 +87,7 @@
                             selectDate2();
                     });
             });
-
-            //시간조회 입력 후 제출 처/
+            //시간조회 입력 후 제출 리/
             function selectTime() {
                 $.ajax({
                     url : "/mainPage/timeSelect",
@@ -103,7 +97,6 @@
                         startTime:$("#selectStarttime").val(),
                         end_Date: $("#selectEndDate2").val(),
                         endTime: $("#selectEndtime").val(),
-
                     }),
                     contentType: "application/json; charset=utf-8",
                 })
@@ -122,10 +115,7 @@
                     selectTime();
                     });
             });
-
-
         </script>
-
         <script>
         // "시간조회" 버튼 클릭 시 number form 생성
           function timeInput(){
@@ -158,7 +148,7 @@
           </script>
 
           <script>
-            //시작시간/종료시간을 지정하고, 수신한 데이터를 테이블로 표시 -- 서현
+            //시작시간/종료시간을 지정하고, 수신한 데이터를 그래프와 테이블로 표시 
             function showDataTable() {
                 $.ajax({
                     url : "/mainPage/tableDatetimeSelect",
@@ -169,22 +159,121 @@
                     }),
                     contentType: "application/json; charset=utf-8",
                 })
-
                 .done(function (json){
-                    $("#table_body").empty();
-                    //build Table
-                   var table = document.getElementById('table_body');
-                   for (var i=0; i < json.length; i++) {
-                      var row = `<tr>
-                                   <td>${json[i].start_date}</td>
-                                   <td>${json[i].end_date}</td>
-                                   <td>${json[i].people}</td>
-                                   <td>${json[i].vehicle}</td>
-                                 </tr>`
-                                   table.innerHTML += row
-                                 }
-                      })
+                    //수신한 데이터를 그래표로 표시
+                    $(function () {
+                    $(document).ready(function() {
+                        Highcharts.setOptions({
+                            global: {
+                                useUTC: false
+                            }
+                        });
+                    });
+                    var chart;
+                    //시작시간 받아오는 함수
+                    var getDay = function() {
+                        var data = [];
+                               for (i=0; i < json.length; i++) {
+                                    data.push(                                       
+                                        json[i].start_date
+                                    );
+                                }
+                                console.log(data);
+                                return data;
+                    };
+                    //차트 각종 설정
+                    $('#container').highcharts({
+                        chart: {
+                            type: 'spline'
 
+                        },
+                        title: {
+                            text: 'DATA GRAPH',
+                            x: -20
+                        },
+                        xAxis: {
+                            type: 'datetime',
+                            categories:getDay(),                                               
+                        },
+                        yAxis: [{
+                            title: {
+                                text: 'People'
+                            },
+                            plotLines: [{
+                                value: 0,
+                                width: 1,
+                                color: '#808080'
+                            }]
+                        },
+                        {
+                            title: {
+                                text: 'Vehicle'
+                            },
+                            plotLines: [{
+                                value: 0,
+                                width: 1,
+                                color: '#808080'
+                            }]
+                        }],
+                        tooltip: {
+                            formatter: function() {
+                                    return '<b>'+ this.series.name +'</b><br/>'+
+                                    Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) +'<br/>'+
+                                    Highcharts.numberFormat(this.y, 2);
+                            }
+                        },
+                        legend: {
+                            enabled: false
+                        },
+                        exporting: {
+                            enabled: false
+                        },
+                        series: [{
+                            name: 'People data',
+                            data: (function() {
+                                // generate an array of random data
+                                var data =[];          
+                                for (i=0; i < json.length; i++) {
+                                    data.push(                                       
+                                       json[i].people
+                                   );
+                                }
+                                console.log(data);
+                                return data;
+                            })()
+                         },
+                         {
+                            name: 'Vehicle data',
+                            data: (function() {
+                                // generate an array of random data
+                                var data = [];
+                               for (i=0; i < json.length; i++) {
+                                    data.push(                                       
+                                        json[i].vehicle
+                                    );
+                                }
+                                return data;
+                            })()
+                        }]
+                    });
+                 //수신한 데이터를 테이블로 표시
+                $("#table_body").empty();
+                    //build Table
+                var table = document.getElementById('table_body');
+                for (var i=0; i < json.length; i++)
+                {
+                    var row = `<tr>
+                        <td>${json[i].start_date}</td>
+                        <td>${json[i].end_date}</td>
+                        <td>${json[i].people}</td>
+                        <td>${json[i].vehicle}</td>
+                        </tr>`
+                    table.innerHTML += row
+                }
+
+                    })
+                }
+                )
                 .fail(function (xhr, status, errorThrown){
                     alert("Failed");
                     console.log(status);
@@ -193,8 +282,6 @@
             $(function() {
                 $("#datetime_submit_btn").on("click", showDataTable);
             });
-
-
           </script>
 
           <script>
@@ -272,7 +359,8 @@
              <tbody id='table_body'> </tbody>
           </table>
         </div>
-
+        <div id="container"
+        style="min-width: 100px; height: 400px; margin: 0 auto"></div>
 
     </body>
 </html>
