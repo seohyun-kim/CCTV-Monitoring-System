@@ -226,5 +226,3 @@ function createData(updateTime) {
         endDate: endDate
     };
 }
-
-var test = 1;
