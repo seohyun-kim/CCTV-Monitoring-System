@@ -45,6 +45,7 @@ app.get('/', (req, res) => {
 
 app.get('/login', (req, res) => {
     let session = req.session;
+    console.log("session.email", session.email);
     if (session.email) {
         res.redirect('/mainPage');
     } else {
@@ -83,7 +84,7 @@ app.get('/mainPage', (req, res) => {
         if (err) {
             console.log(err);
         } else {
-            console.log(row);
+            //console.log(row);
             res.render('./mainPage.ejs', { data: row[0] }); // min(start_date), max(end_date)
         }
     });
@@ -97,7 +98,7 @@ app.post('/mainPage/refreshData', (req, res) => {
         if (err) {
             console.log(err);
         } else {
-            console.log(row);
+            //console.log(row);
             res.json(row[0]); // latest row
         }
     });
@@ -112,21 +113,21 @@ app.post('/mainPage/dateSelect', (req, res) => {
         if (err) {
             console.log(err);
         } else {
-            console.log(row);
+            //console.log(row);
             res.json(row[0]); // sum(people), sum(vehicle)
         }
     });
 });
 
 //합계 데이터 조회 - 일간 조회
-app.post('/mainPage/dateSelect2', (req, res) => {
+app.post('/mainPage/daySelect', (req, res) => {
     var data = req.body;
     var sql = "select sum(people), sum(vehicle) from test WHERE start_date >= CONCAT(?,' 00:00:00') AND start_date <= CONCAT(?,' 23:59:59')";
     conn.query(sql,[data._Date,data._Date], (err, row) => {
         if (err) {
             console.log(err);
         } else {
-            console.log(row);
+            //console.log(row);
             res.json(row[0]); // sum(people), sum(vehicle)
         }
     });
@@ -140,7 +141,7 @@ app.post('/mainPage/timeSelect', (req, res) => {
         if (err) {
             console.log(err);
         } else {
-            console.log(row);
+            //console.log(row);
             res.json(row[0]); // sum(people), sum(vehicle)
         }
 
@@ -157,7 +158,7 @@ app.post('/mainPage/tableDatetimeSelect', (req, res) => {
         if (err) {
             console.log(err);
         } else {
-            console.log(row);
+            //console.log(row);
             res.json(row);
         }
     });
