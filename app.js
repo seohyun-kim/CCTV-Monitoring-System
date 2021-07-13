@@ -2,6 +2,8 @@ const mysql = require('mysql');
 const express = require('express');
 const ejs = require('ejs');
 const schedule = require('node-schedule');
+const cookie = require('cookie-parser');
+const session = require('express-session');
 
 // mysql 연결
 var conn = mysql.createConnection({
@@ -17,6 +19,20 @@ conn.connect();
 const app = express();
 app.set('view engine', 'ejs');
 app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
+// session 사용
+//app.use(cookieParser());
+app.use(session({
+    key: 'sid',
+    secret: 'secret',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        maxAge: 10 * 60 * 1000 // 쿠키 유효기간 10분
+    }
+}));
+
 
 var port = 8080;
 app.listen(port, () => {
@@ -24,10 +40,44 @@ app.listen(port, () => {
 });
 
 app.get('/', (req, res) => {
-    res.redirect('/mainPage');
-})
+    res.redirect('/login');
+});
+
+app.get('/login', (req, res) => {
+    let session = req.session;
+    if (session.email) {
+        res.redirect('/mainPage');
+    } else {
+        res.render('./loginPage.ejs');
+    }
+});
+
+app.post('/login', (req, res) => {
+    console.log(req.body.userId);
+    var sql = 'select * from user_info where user_id = ?'
+    conn.query(sql, [req.body.userId], (err, row) => {
+        if (err) {
+            console.log(err);
+        } else {
+            if (row.length == 0) {
+                res.write('<script>alert("Wrong ID. Please check the ID"); history.back();</script>');
+            } else {
+                if (row[0].user_pw != req.body.userPw) {
+                    res.write('<script>alert("Wrong Passward. Please check the Passward"); history.back();</script>');
+                } else {
+                    req.session.email = req.body.userId;
+                    res.redirect('/mainPage');
+                }
+            }
+        }
+    });
+});
+
 
 app.get('/mainPage', (req, res) => {
+    if (!req.session.email) {
+        res.redirect('/login');
+    }
     var sql = 'select min(start_date), max(end_date) from test';
     conn.query(sql, (err, row) => {
         if (err) {
@@ -111,6 +161,14 @@ app.post('/mainPage/tableDatetimeSelect', (req, res) => {
             res.json(row);
         }
     });
+});
+
+//메인페이지 로그아웃
+app.post('/mainPage/logout', (req, res) => {
+    req.session.destroy();
+    res.clearCookie('sid');
+
+    res.redirect('/login');
 });
 
 
