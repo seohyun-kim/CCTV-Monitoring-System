@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+    </head>
+    <body>
+      <script>
+
+        //기간조회 입력 후 제출처리
+        function selectDate() {
+
+          const config = {
+              method: "post",
+              headers: {'Content-Type': 'application/json'},
+              body: JSON.stringify({
+                  startDate: $("#selectStartDate").val(),
+                  endDate: $("#selectEndDate").val()}) //값 전달
+          };
+          fetch('/mainPage/dateSelect', config)
+            .then(res => res.json())
+            .then(data => {
+              $('#sumPeople').text(data['sum(people)'])
+              $('#sumVehicle').text(data['sum(vehicle)'])
+            })
+            .catch(error => console.log(error))
+        }
+        $(function() {
+            $(document).on("click", "#dateSelectBtn", function(){
+                        selectDate();
+                });
+        });
+
+
+        //일간 조회 입력 후 제출 처리
+        function selectDay() { //일간 : Day2-> Day로 수정
+          const config = {
+              method: "post",
+              headers: {'Content-Type': 'application/json'},
+              body: JSON.stringify({
+                  _Date:$("#selectDay").val()})
+          };
+          fetch('/mainPage/daySelect', config)
+            .then(res => res.json())
+            .then(data => {
+              $('#sumPeople').text(data['sum(people)']);
+              $('#sumVehicle').text(data['sum(vehicle)']);
+            })
+            .catch(error => console.log(error))
+
+        }
+        $(function() {
+            $(document).on("click", "#daySelectBtn", function(){
+                        selectDay();
+                });
+        });
+
+        //시간조회 입력 후 제출 처리
+        function selectTime() {
+
+          const config = {
+              method: "post",
+              headers: {'Content-Type': 'application/json'},
+              body: JSON.stringify({
+                  start_Date:$("#selectStartDate2").val(),
+                  startTime:$("#selectStarttime").val(),
+                  end_Date: $("#selectEndDate2").val(),
+                  endTime: $("#selectEndtime").val()})
+          };
+          fetch('/mainPage/timeSelect', config)
+            .then(res => res.json())
+            .then(data => {
+              $('#sumPeople').text(data['sum(people)']);
+              $('#sumVehicle').text(data['sum(vehicle)']);
+            })
+            .catch(error => console.log(error))
+        }
+        $(function() {
+            $(document).on("click", "#timeSelectBtn", function(){
+                selectTime();
+                });
+        });
+
+
+
+    // "시간조회" 버튼 클릭 시 number form 생성
+      function timeInput(){
+        $('#sumPeople').text(' ');
+        $('#sumVehicle').text(' ');
+        $("#addForm").empty();
+        $('#addForm').append('<input id="selectStartDate2" type="date"> ~  ')
+        $('#addForm').append('<input id="selectEndDate2" type="date"> ')
+        $('#addForm').append('<input id="selectStarttime" type="time" size="10">  ')
+        $('#addForm').append('<input id="selectEndtime" type="time" size="10"> ')
+        $('#addForm').append('<button type="button" id="timeSelectBtn">시간 선택</button>')
+      }
+      // "일간 조회" 버튼 클릭 시 date form 생성
+        function dayInput(){
+          $('#sumPeople').text(' ');
+          $('#sumVehicle').text(' ');
+          $("#addForm").empty();
+          $('#addForm').append("<input id='selectDay' type='date'>");
+          $('#addForm').append("<button type='button' id='daySelectBtn'>제출 </button>")
+        }
+        // "기간 조회" 버튼 클릭 시 date form 2개 생성
+          function termInput(){
+            $('#sumPeople').text(' ');
+            $('#sumVehicle').text(' ');
+            $("#addForm").empty();
+            $('#addForm').append("<input id='selectStartDate' type='date'> ~ ");
+            $('#addForm').append("<input id='selectEndDate' type='date'> ");
+            $('#addForm').append("<button type='button' id='dateSelectBtn'>제출 </button>")
+          }
+
+      </script>
+    </body>

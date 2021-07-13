@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+    </head>
+    <body>
+      <script>
+
+        //데이터 새고로침
+        function refreshData() {
+
+          const config = {
+              method: "post"
+          };
+          fetch('/mainPage/refreshData', config)
+            .then(res => res.json())
+            .then(data => {
+              console.log("refreshed!", data);
+              $('#startDate').text(data.end_date);
+              $('#endDate').text(data.end_date);
+              $('#peopleNum').text(data.people);
+              $('#vehicleNum').text(data.vehicle);
+            })
+            .catch(error => console.log(error))
+        }
+        $(function() {
+            $("#refreshDataBtn").on("click", refreshData);
+        });
+
+      </script>
+    </body>
