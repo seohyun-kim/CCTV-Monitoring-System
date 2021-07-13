@@ -147,6 +147,7 @@
           </script>
 
           <script>
+          /*
             //시작시간/종료시간을 지정하고, 수신한 데이터를 그래프와 테이블로 표시
             function showDataTable() {
 
@@ -278,7 +279,7 @@
             $(function() {
                 $("#datetime_submit_btn").on("click", showDataTable);
             });
-
+*/
           </script>
 
           <script>
@@ -344,6 +345,7 @@
           <input id='table_e_time' type='datetime-local'>
           <input type="button" id="datetime_submit_btn" value="조회"  />
         </div>
+        <%-include('chart.ejs')%>
 
         <div id='dataList'>
           <table class='dataList' border="1">
