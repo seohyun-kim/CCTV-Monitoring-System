@@ -16,105 +16,104 @@
                 $("#selectEndDate").attr('value', max);
             }
             //데이터 새고로침
+
+
             function refreshData() {
-                $.ajax({
-                    url : "/mainPage/refreshData",
-                    type : "POST",
-                    dataType : "JSON",
+
+              const config = {
+                  method: "post"
+              };
+              fetch('/mainPage/refreshData', config)
+                .then(res => res.json())
+                .then(data => {
+                  console.log("fetch!!", data);
+                  $('#startDate').text(data.end_date);
+                  $('#endDate').text(data.end_date);
+                  $('#peopleNum').text(data.people);
+                  $('#vehicleNum').text(data.vehicle);
                 })
-                .done(function (json){
-                    console.log(json);
-                    $('#startDate').text(json.end_date);
-                    $('#endDate').text(json.end_date);
-                    $('#peopleNum').text(json.people);
-                    $('#vehicleNum').text(json.vehicle);
-                })
-                .fail(function (xhr, status, errorThrown){
-                    alert("Refresh Data Failed");
-                });
+                .catch(error => console.log(error))
             }
             $(function() {
                 $("#refreshDataBtn").on("click", refreshData);
             });
+
+
             //기간조회 입력 후 제출처리
             function selectDate() {
-                $.ajax({
-                    url : "/mainPage/dateSelect",
-                    type : "POST",
-                    data: JSON.stringify({
-                        startDate: $("#selectStartDate").val(),
-                        endDate: $("#selectEndDate").val()
-                    }),
-                    contentType: "application/json; charset=utf-8",
+
+              const config = {
+                  method: "post",
+                  headers: {'Content-Type': 'application/json'},
+                  body: JSON.stringify({
+                      startDate: $("#selectStartDate").val(),
+                      endDate: $("#selectEndDate").val()}) //값 전달
+              };
+              fetch('/mainPage/dateSelect', config)
+                .then(res => res.json())
+                .then(data => {
+                  $('#sumPeople').text(data['sum(people)'])
+                  $('#sumVehicle').text(data['sum(vehicle)'])
                 })
-                .done(function (json){
-                    console.log(json);
-                    $('#sumPeople').text(json['sum(people)']);
-                    $('#sumVehicle').text(json['sum(vehicle)']);
-                })
-                .fail(function (xhr, status, errorThrown){
-                    alert("Date Select Failed");
-                    console.log(status);
-                });
+                .catch(error => console.log(error))
             }
             $(function() {
                 $(document).on("click", "#dateSelectBtn", function(){
                             selectDate();
                     });
             });
+
+
             //일간 조회 입력 후 제출 처리
-            function selectDate2() {
-                $.ajax({
-                    url : "/mainPage/dateSelect2",
-                    type : "POST",
-                    data: JSON.stringify({
-                        _Date:$("#selectDate").val(),
-                    }),
-                    contentType: "application/json; charset=utf-8",
+            function selectDay() { //일간 : Day2-> Day로 수정
+              const config = {
+                  method: "post",
+                  headers: {'Content-Type': 'application/json'},
+                  body: JSON.stringify({
+                      _Date:$("#selectDay").val()})
+              };
+              fetch('/mainPage/daySelect', config)
+                .then(res => res.json())
+                .then(data => {
+                  $('#sumPeople').text(data['sum(people)']);
+                  $('#sumVehicle').text(data['sum(vehicle)']);
                 })
-                .done(function (json){
-                    console.log(json);
-                    $('#sumPeople').text(json['sum(people)']);
-                    $('#sumVehicle').text(json['sum(vehicle)']);
-                })
-                .fail(function (xhr, status, errorThrown){
-                    alert("Date Select Failed");
-                    console.log(status);
-                });
+                .catch(error => console.log(error))
+
             }
             $(function() {
-                $(document).on("click", "#dateSelectBtn2", function(){
-                            selectDate2();
+                $(document).on("click", "#daySelectBtn", function(){
+                            selectDay();
                     });
             });
-            //시간조회 입력 후 제출 리/
+
+            //시간조회 입력 후 제출 처리
             function selectTime() {
-                $.ajax({
-                    url : "/mainPage/timeSelect",
-                    type : "POST",
-                    data: JSON.stringify({
-                        start_Date:$("#selectStartDate2").val(),
-                        startTime:$("#selectStarttime").val(),
-                        end_Date: $("#selectEndDate2").val(),
-                        endTime: $("#selectEndtime").val(),
-                    }),
-                    contentType: "application/json; charset=utf-8",
+
+              const config = {
+                  method: "post",
+                  headers: {'Content-Type': 'application/json'},
+                  body: JSON.stringify({
+                      start_Date:$("#selectStartDate2").val(),
+                      startTime:$("#selectStarttime").val(),
+                      end_Date: $("#selectEndDate2").val(),
+                      endTime: $("#selectEndtime").val()})
+              };
+              fetch('/mainPage/timeSelect', config)
+                .then(res => res.json())
+                .then(data => {
+                  $('#sumPeople').text(data['sum(people)']);
+                  $('#sumVehicle').text(data['sum(vehicle)']);
                 })
-                .done(function (json){
-                    //console.log(json);
-                    $('#sumPeople').text(json['sum(people)']);
-                    $('#sumVehicle').text(json['sum(vehicle)']);
-                })
-                .fail(function (xhr, status, errorThrown){
-                    alert("Date Select Failed");
-                    console.log(status);
-                });
+                .catch(error => console.log(error))
             }
             $(function() {
                 $(document).on("click", "#timeSelectBtn", function(){
                     selectTime();
                     });
             });
+
+
         </script>
         <script>
         // "시간조회" 버튼 클릭 시 number form 생성
@@ -133,8 +132,8 @@
               $('#sumPeople').text(' ');
               $('#sumVehicle').text(' ');
               $("#addForm").empty();
-              $('#addForm').append("<input id='selectDate' type='date'>");
-              $('#addForm').append("<button type='button' id='dateSelectBtn2'>제출 </button>")
+              $('#addForm').append("<input id='selectDay' type='date'>");
+              $('#addForm').append("<button type='button' id='daySelectBtn'>제출 </button>")
             }
             // "기간 조회" 버튼 클릭 시 date form 2개 생성
               function termInput(){
@@ -148,140 +147,138 @@
           </script>
 
           <script>
-            //시작시간/종료시간을 지정하고, 수신한 데이터를 그래프와 테이블로 표시 
+            //시작시간/종료시간을 지정하고, 수신한 데이터를 그래프와 테이블로 표시
             function showDataTable() {
-                $.ajax({
-                    url : "/mainPage/tableDatetimeSelect",
-                    type : "POST",
-                    data: JSON.stringify({
-                        startDate: $("#table_s_time").val(),
-                        endDate: $("#table_e_time").val()
-                    }),
-                    contentType: "application/json; charset=utf-8",
+
+              const config = {
+                  method: "post",
+                  headers: {'Content-Type': 'application/json'},
+                  body: JSON.stringify({
+                      startDate: $("#table_s_time").val(),
+                      endDate: $("#table_e_time").val()})
+              };
+              fetch('/mainPage/tableDatetimeSelect', config)
+                .then(res => res.json())
+                .then(json => {
+                  $(function () {
+                  $(document).ready(function() {
+                      Highcharts.setOptions({
+                          global: {
+                              useUTC: false
+                          }
+                      });
+                  });
+                  var chart;
+                  //시작시간 받아오는 함수
+                  var getDay = function() {
+                      var data = [];
+                             for (i=0; i < json.length; i++) {
+                                  data.push(
+                                      json[i].start_date
+                                  );
+                              }
+                              console.log(data);
+                              return data;
+                  };
+                  //차트 각종 설정
+                  $('#container').highcharts({
+                      chart: {
+                          type: 'spline'
+
+                      },
+                      title: {
+                          text: 'DATA GRAPH',
+                          x: -20
+                      },
+                      xAxis: {
+                          type: 'datetime',
+                          categories:getDay(),
+                      },
+                      yAxis: [{
+                          title: {
+                              text: 'People'
+                          },
+                          plotLines: [{
+                              value: 0,
+                              width: 1,
+                              color: '#808080'
+                          }]
+                      },
+                      {
+                          title: {
+                              text: 'Vehicle'
+                          },
+                          plotLines: [{
+                              value: 0,
+                              width: 1,
+                              color: '#808080'
+                          }]
+                      }],
+                      tooltip: {
+                          formatter: function() {
+                                  return '<b>'+ this.series.name +'</b><br/>'+
+                                  Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) +'<br/>'+
+                                  Highcharts.numberFormat(this.y, 2);
+                          }
+                      },
+                      legend: {
+                          enabled: false
+                      },
+                      exporting: {
+                          enabled: false
+                      },
+                      series: [{
+                          name: 'People data',
+                          data: (function() {
+                              // generate an array of random data
+                              var data =[];
+                              for (i=0; i < json.length; i++) {
+                                  data.push(
+                                     json[i].people
+                                 );
+                              }
+                              console.log(data);
+                              return data;
+                          })()
+                       },
+                       {
+                          name: 'Vehicle data',
+                          data: (function() {
+                              // generate an array of random data
+                              var data = [];
+                             for (i=0; i < json.length; i++) {
+                                  data.push(
+                                      json[i].vehicle
+                                  );
+                              }
+                              return data;
+                          })()
+                      }]
+                  });
+               //수신한 데이터를 테이블로 표시
+              $("#table_body").empty();
+                  //build Table
+              var table = document.getElementById('table_body');
+              for (var i=0; i < json.length; i++)
+              {
+                  var row = `<tr>
+                      <td>${json[i].start_date}</td>
+                      <td>${json[i].end_date}</td>
+                      <td>${json[i].people}</td>
+                      <td>${json[i].vehicle}</td>
+                      </tr>`
+                  table.innerHTML += row
+              }
+
+                  })
                 })
-                .done(function (json){
-                    //수신한 데이터를 그래표로 표시
-                    $(function () {
-                    $(document).ready(function() {
-                        Highcharts.setOptions({
-                            global: {
-                                useUTC: false
-                            }
-                        });
-                    });
-                    var chart;
-                    //시작시간 받아오는 함수
-                    var getDay = function() {
-                        var data = [];
-                               for (i=0; i < json.length; i++) {
-                                    data.push(                                       
-                                        json[i].start_date
-                                    );
-                                }
-                                console.log(data);
-                                return data;
-                    };
-                    //차트 각종 설정
-                    $('#container').highcharts({
-                        chart: {
-                            type: 'spline'
+                .catch(error => console.log(error))
+              }
 
-                        },
-                        title: {
-                            text: 'DATA GRAPH',
-                            x: -20
-                        },
-                        xAxis: {
-                            type: 'datetime',
-                            categories:getDay(),                                               
-                        },
-                        yAxis: [{
-                            title: {
-                                text: 'People'
-                            },
-                            plotLines: [{
-                                value: 0,
-                                width: 1,
-                                color: '#808080'
-                            }]
-                        },
-                        {
-                            title: {
-                                text: 'Vehicle'
-                            },
-                            plotLines: [{
-                                value: 0,
-                                width: 1,
-                                color: '#808080'
-                            }]
-                        }],
-                        tooltip: {
-                            formatter: function() {
-                                    return '<b>'+ this.series.name +'</b><br/>'+
-                                    Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) +'<br/>'+
-                                    Highcharts.numberFormat(this.y, 2);
-                            }
-                        },
-                        legend: {
-                            enabled: false
-                        },
-                        exporting: {
-                            enabled: false
-                        },
-                        series: [{
-                            name: 'People data',
-                            data: (function() {
-                                // generate an array of random data
-                                var data =[];          
-                                for (i=0; i < json.length; i++) {
-                                    data.push(                                       
-                                       json[i].people
-                                   );
-                                }
-                                console.log(data);
-                                return data;
-                            })()
-                         },
-                         {
-                            name: 'Vehicle data',
-                            data: (function() {
-                                // generate an array of random data
-                                var data = [];
-                               for (i=0; i < json.length; i++) {
-                                    data.push(                                       
-                                        json[i].vehicle
-                                    );
-                                }
-                                return data;
-                            })()
-                        }]
-                    });
-                 //수신한 데이터를 테이블로 표시
-                $("#table_body").empty();
-                    //build Table
-                var table = document.getElementById('table_body');
-                for (var i=0; i < json.length; i++)
-                {
-                    var row = `<tr>
-                        <td>${json[i].start_date}</td>
-                        <td>${json[i].end_date}</td>
-                        <td>${json[i].people}</td>
-                        <td>${json[i].vehicle}</td>
-                        </tr>`
-                    table.innerHTML += row
-                }
-
-                    })
-                }
-                )
-                .fail(function (xhr, status, errorThrown){
-                    alert("Failed");
-                    console.log(status);
-                });
-            }
             $(function() {
                 $("#datetime_submit_btn").on("click", showDataTable);
             });
+
           </script>
 
           <script>
