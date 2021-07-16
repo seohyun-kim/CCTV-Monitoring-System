@@ -24,8 +24,8 @@ function() {
     });
 });
 
+// mysql 연결 해제시 자동으로 다시 연결
 handleDisconnect(conn);
-
 function handleDisconnect(connection) {
     connection.on('error', function(err) {
         if (!err.fatal) {

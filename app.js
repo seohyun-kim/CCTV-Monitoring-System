@@ -71,7 +71,6 @@ app.post('/login', (req, res) => {
                 }
             }
         }
-        conn.release();
     });
 });
 
@@ -88,7 +87,6 @@ app.get('/mainPage', (req, res) => {
             //console.log(row);
             res.render('./mainPage.ejs', { data: row[0] }); // min(start_date), max(end_date)
         }
-        conn.release();
     });
 });
 
@@ -103,7 +101,6 @@ app.post('/mainPage/refreshData', (req, res) => {
             //console.log(row);
             res.json(row[0]); // latest row
         }
-        conn.release();
     });
 });
 
@@ -119,7 +116,6 @@ app.post('/mainPage/dateSelect', (req, res) => {
             //console.log(row);
             res.json(row[0]); // sum(people), sum(vehicle)
         }
-        conn.release();
     });
 });
 
@@ -134,7 +130,6 @@ app.post('/mainPage/daySelect', (req, res) => {
             //console.log(row);
             res.json(row[0]); // sum(people), sum(vehicle)
         }
-        conn.release();
     });
 });
 
@@ -149,7 +144,6 @@ app.post('/mainPage/timeSelect', (req, res) => {
             //console.log(row);
             res.json(row[0]); // sum(people), sum(vehicle)
         }
-        conn.release();
     });
 });
 
@@ -166,7 +160,6 @@ app.post('/mainPage/tableDatetimeSelect', (req, res) => {
             //console.log(row);
             res.json(row);
         }
-        conn.release();
     });
 });
 
@@ -211,7 +204,6 @@ app.post('/createSampleData', (req, res) => {
             } else {
                 console.log('complete insert data');
             }
-            conn.release();
         });
     });
 })
