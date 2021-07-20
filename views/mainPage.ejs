@@ -6,6 +6,7 @@
         <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
         <script src="http://code.highcharts.com/highcharts.js"></script>
         <script src="http://code.highcharts.com/modules/exporting.js"></script>
+        <script src="../socket.io-client/dist/socket.io.js"></script>
 
         <%-include('part/refresh.ejs')%>
         <%-include('part/sumData.ejs')%>
@@ -26,8 +27,14 @@
               initSelectDateOption(minDate, maxDate);
               refreshData();
               selectDate();
-          </script>
-
+        </script>
+        
+        <script>
+            var socket = io.connect('http://localhost:8080');
+            socket.on('recMsg', function(data) {
+                console.log(data.comment)
+            })
+        </script>
 
     </head>
     <body>

@@ -4,7 +4,7 @@ const ejs = require('ejs');
 const schedule = require('node-schedule');
 const cookie = require('cookie-parser');
 const session = require('express-session');
-const socketio = require("socket.io");
+const socketio = require("socket-io");
 
 // mysql 연결
 var conn = mysql.createConnection({
@@ -41,6 +41,8 @@ const io = socketio(server);
 io.on("connection", (socket) => {
     const {url} = socket.requesst;
     console.log(`connect: ${url}`);
+
+    socket.on("text", (text) => console.log(`message: ${text}`));
 });
 
 
