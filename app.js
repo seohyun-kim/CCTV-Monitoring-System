@@ -4,6 +4,7 @@ const ejs = require('ejs');
 const schedule = require('node-schedule');
 const cookie = require('cookie-parser');
 const session = require('express-session');
+const socketio = require("socket.io");
 
 // mysql 연결
 var conn = mysql.createConnection({
@@ -32,6 +33,15 @@ app.use(session({
         maxAge: 10 * 60 * 1000 // 쿠키 유효기간 10분
     }
 }));
+
+// socket 연결
+const server = http.creteServer(app);
+const io = socketio(server);
+
+io.on("connection", (socket) => {
+    const {url} = socket.requesst;
+    console.log(`connect: ${url}`);
+});
 
 
 var port = 8080;
