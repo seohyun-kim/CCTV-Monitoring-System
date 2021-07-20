@@ -24,6 +24,23 @@ function() {
     });
 });
 
+// mysql 연결 해제시 자동으로 다시 연결
+handleDisconnect(conn);
+function handleDisconnect(connection) {
+    connection.on('error', function(err) {
+        if (!err.fatal) {
+            return;
+        }
+
+        if (err.code !== 'PROTOCOL_CONNECTION_LOST') {
+            throw err;
+        }
+        console.log('Re-connecting lost connection: ' + err.stack);
+        conn = mysql.createConnection(connection.config);
+        handleDisconnect(conn);
+        conn.connect();
+    });
+}
 
 
 // 샘플 데이터 랜덤으로 생성

@@ -144,7 +144,6 @@ app.post('/mainPage/timeSelect', (req, res) => {
             //console.log(row);
             res.json(row[0]); // sum(people), sum(vehicle)
         }
-
     });
 });
 
