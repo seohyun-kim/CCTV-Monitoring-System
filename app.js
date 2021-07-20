@@ -4,7 +4,7 @@ const ejs = require('ejs');
 const schedule = require('node-schedule');
 const cookie = require('cookie-parser');
 const session = require('express-session');
-const socketio = require("socket.io");
+const http=require('http');
 
 // mysql 연결
 var conn = mysql.createConnection({
@@ -34,20 +34,51 @@ app.use(session({
     }
 }));
 
-// socket 연결
-const server = http.creteServer(app);
-const io = socketio(server);
 
-io.on("connection", (socket) => {
-    const {url} = socket.requesst;
-    console.log(`connect: ${url}`);
-});
-
-
+    
+  
+//포트 
 var port = 8080;
-app.listen(port, () => {
+var server = app.listen(port, () => {
     console.log(`start app listening at http://localhost:${port}`)
 });
+
+//웹소켓 연결
+var io = require('socket.io').listen(server);
+io.on("connection", (socket) => {
+    console.log('a user connected')
+    // const {url} = socket.request;
+    // console.log(`연결됨: ${url}`);
+    // socket.interval = setInterval(() => {
+    //     // 3초마다 클라이언트로 메시지 전송
+    //     socket.emit('news', 'Hello Socket.IO');
+    //   }, 3000);
+    // var sql = 'select people from test order by id desc limit 1';
+    // conn.query(sql, (err, row) => {
+    //     if (err) {
+    //         console.log(err);
+    //     } else {
+    //         //console.log(row);
+    //         //res.json(row[0]); // latest row
+    //         console.log(row[0].people);
+    //         socket.emit("people",row[0].people);
+    //     }
+    // });
+    socket.on('disconnect', function () {
+        console.log('user disconnected')
+      })
+    socket.on('error', (error) => {
+        // 에러 시
+        console.error(error);
+      });
+      socket.on("text", (data) => {
+        // 클라이언트로부터 메시지 수신 시
+        console.log(data);
+        socket.emit("answer","ho~");
+      });
+
+});
+
 
 app.get('/', (req, res) => {
     res.redirect('/login');
