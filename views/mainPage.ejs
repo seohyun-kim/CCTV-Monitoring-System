@@ -8,8 +8,6 @@
         <script src="http://code.highcharts.com/modules/exporting.js"></script>
         <script src="https://cdn.socket.io/3.1.3/socket.io.min.js"></script>
 
-        <!--script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.3/socket.io.js"></script-->
-        <!--<script src="/socket.io/socket.io.js"></script>-->
         <%-include('part/refresh.ejs')%>
         <%-include('part/sumData.ejs')%>
         <%-include('part/chart.ejs')%>
@@ -35,32 +33,26 @@
             var port = JSON.parse('<%- JSON.stringify(port) %>');
             console.log(port);
             var socket = io.connect("http://localhost:" + port);
-            socket.on('toClient', function(data) {
+            socket.on('outlierData', function(data) {
                 console.log(data);
-                notify();
+                notify(data.id, data.msg);
             })
         </script>
 
         <script>
             Notification.requestPermission();
-            function notify() {
+            function notify(id, msg) {
                 if (Notification.permission !== "denied") {
-                    //Notification.requestPermission();
-                    new Notification("이상값 감지");
-                    /*
-                    Notification.requestPermission(permission => {
-                        if (permission === "granted") {
-                            new Notification("이상값 감지");
-                        } else {
-                            alert('Notification denied');
-                        }
-                    });
-                    */
+                    new Notification("id="+id + ": " + msg);
                 }
                 else if (Notification.permission === "denied") {
                     Notification.requestPermission();
                 }
             }
+        </script>
+
+        <script>
+
         </script>
 
     </head>

@@ -47,12 +47,32 @@ const io = socketio(server);
 io.on("connection", (socket) => {
     console.log(`connect: ${socket.id}`);
 
-    var sendData = "hello";
-    // client로 데이터 보낼때
-    // 첫번째 인자가 client의 on과 같아야함
-    socket.emit("toClient", sendData);
-    //socket.on("hello", (data) => console.log(`message: ${data}`));
+    var lastRowID = -1;
+    var job = schedule.scheduleJob(
+        '*/5 * * * * *', // 주기 (5분마다)
+    function() {
+        console.log(1);
+        var sql = 'select * from backup order by id desc limit 1';
+        conn.query(sql, (err, row) => {
+            if (err) {
+                console.log(err);
+            } else {
+                if (lastRowID != row[0].id) {
+                    lastRowID = row[0].id;
+                    console.log(row[0]);
+                    socket.emit("outlierData", row[0]);
+                } else {
+                    console.log('not update database');
+                }
+            }
+        });
+    });
+
+
 });
+
+
+
 
 app.get('/', (req, res) => {
     res.redirect('/login');
