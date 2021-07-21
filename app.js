@@ -4,7 +4,8 @@ const ejs = require('ejs');
 const schedule = require('node-schedule');
 const cookie = require('cookie-parser');
 const session = require('express-session');
-const socketio = require("socket.io");
+const http=require('http');
+const socketio = require('socket.io');
 
 // mysql 연결
 var conn = mysql.createConnection({
@@ -35,7 +36,7 @@ app.use(session({
 }));
 
 // server 생성
-var port = 8080;
+var port = 3000;
 const server = app.listen(port, () => {
     console.log(`start app listening at http://localhost:${port}`)
 });
@@ -52,7 +53,6 @@ io.on("connection", (socket) => {
     socket.emit("toClient", sendData);
     //socket.on("hello", (data) => console.log(`message: ${data}`));
 });
-
 
 app.get('/', (req, res) => {
     res.redirect('/login');
@@ -100,7 +100,7 @@ app.get('/mainPage', (req, res) => {
             console.log(err);
         } else {
             //console.log(row);
-            res.render('./mainPage.ejs', { data: row[0] }); // min(start_date), max(end_date)
+            res.render('./mainPage.ejs', { data: row[0], port: port }); // min(start_date), max(end_date)
         }
     });
 });
