@@ -8,15 +8,20 @@
   
 #### project ver.2.2  (2021-07-15) ----- [ver.2.2 블로그 이동](https://seohyun-kim.github.io/CCTV_ver.2.2/)  
 
-    Ajax대신 Fetch API로 수정 / 조회한 데이터 chart로 출력 추가 / 로그인 기능 추가 / session 관리
+    Ajax Fetch API로 수정 / 조회한 데이터 chart로 출력 추가 / 로그인 기능 추가 / session 관리  
+    
+#### project ver.3.1 (2021-07-22) ----- [ver.3 블로그 이동](https://seohyun-kim.github.io/CCTV-ver.3/)  
+
+``` 
+백엔드에서 감시 중 데이터 급증 시 사용자에게 알람기능 제공
+```
+
 
 <br />  
 
 📌 목표  
-#### project ver.3  (~2021-07-29)  
+#### project ver.3.2  (~2021-07-29)  
 ```
-통행량 급증 시 알람기능 제공 (백엔드에서 데이터 감시)  
-웹 소켓에 대해 공부  
 그누보드 게시판 오픈소스 적용해보고 호환성 체크  
 ```
    
