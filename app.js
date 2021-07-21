@@ -51,7 +51,6 @@ io.on("connection", (socket) => {
     var job = schedule.scheduleJob(
         '*/5 * * * * *', // 주기 (5분마다)
     function() {
-        console.log(1);
         var sql = 'select * from backup order by id desc limit 1';
         conn.query(sql, (err, row) => {
             if (err) {
@@ -67,10 +66,7 @@ io.on("connection", (socket) => {
             }
         });
     });
-
-
 });
-
 
 
 

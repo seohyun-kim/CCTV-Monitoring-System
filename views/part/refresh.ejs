@@ -16,7 +16,7 @@
             .then(res => res.json())
             .then(data => {
               console.log("refreshed!", data);
-              $('#startDate').text(data.end_date);
+              $('#startDate').text(data.start_date); //누군가가  바꿔놈
               $('#endDate').text(data.end_date);
               $('#peopleNum').text(data.people);
               $('#vehicleNum').text(data.vehicle);
