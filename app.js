@@ -4,7 +4,7 @@ const ejs = require('ejs');
 const schedule = require('node-schedule');
 const cookie = require('cookie-parser');
 const session = require('express-session');
-const socketio = require("socket-io");
+const socketio = require("socket.io");
 
 // mysql 연결
 var conn = mysql.createConnection({
@@ -34,22 +34,25 @@ app.use(session({
     }
 }));
 
+// server 생성
+var port = 8080;
+const server = app.listen(port, () => {
+    console.log(`start app listening at http://localhost:${port}`)
+});
+
 // socket 연결
-const server = http.creteServer(app);
 const io = socketio(server);
 
 io.on("connection", (socket) => {
-    const {url} = socket.requesst;
-    console.log(`connect: ${url}`);
+    console.log(`connect: ${socket.id}`);
 
-    socket.on("text", (text) => console.log(`message: ${text}`));
+    var sendData = "hello";
+    // client로 데이터 보낼때
+    // 첫번째 인자가 client의 on과 같아야함
+    socket.emit("toClient", sendData);
+    //socket.on("hello", (data) => console.log(`message: ${data}`));
 });
 
-
-var port = 8080;
-app.listen(port, () => {
-    console.log(`start app listening at http://localhost:${port}`)
-});
 
 app.get('/', (req, res) => {
     res.redirect('/login');
