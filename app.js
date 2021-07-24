@@ -6,6 +6,7 @@ const cookie = require('cookie-parser');
 const session = require('express-session');
 const http=require('http');
 const socketio = require('socket.io');
+const MySQLEvents = require('mysql-events');
 
 // mysql 연결
 var conn = mysql.createConnection({
@@ -45,30 +46,47 @@ const server = app.listen(port, () => {
 const io = socketio(server);
 
 io.on("connection", (socket) => {
+    s = socket;
     console.log(`connect: ${socket.id}`);
 
-    var lastRowID = -1;
-    var job = schedule.scheduleJob(
-        '*/5 * * * *', // 주기 (5분마다)
-    function() {
-        var sql = 'select * from backup order by id desc limit 1';
-        conn.query(sql, (err, row) => {
-            if (err) {
-                console.log(err);
-            } else {
-                if (lastRowID != row[0].id) {
-                    lastRowID = row[0].id;
-                    console.log(row[0]);
-                    socket.emit("outlierData", row[0]);
+    // mysql events
+    var dsn = {
+        host:     "3.36.243.240",
+        user:     "test",
+        password: "test",
+      };
+      var lastRowID = -1;
+      var mysqlEventWatcher = MySQLEvents(dsn);
+      var watcher =mysqlEventWatcher.add(
+        'test.backup',
+        function (oldRow, newRow, event) {
+        if (oldRow === null) {
+            var sql = 'select * from backup order by id desc limit 1';
+            conn.query(sql, (err, row) => {
+                if (err) {
+                    console.log(err);
                 } else {
-                    console.log('not update database');
+                    if (lastRowID != row[0].id) {
+                        lastRowID = row[0].id;
+                        console.log(row[0]);
+                        socket.emit("outlierData", row[0]);
+                    } else {
+                        console.log('not update database');
+                    }
                 }
-            }
-        });
-    });
+            });
+        }
+       
+        if (newRow === null) {
+        }
+       
+        if (oldRow !== null && newRow !== null) {
+        }
+       
+        }, 
+        'Active'
+    );
 });
-
-
 
 app.get('/', (req, res) => {
     res.redirect('/login');
