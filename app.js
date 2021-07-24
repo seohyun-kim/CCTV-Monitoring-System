@@ -49,7 +49,7 @@ io.on("connection", (socket) => {
 
     var lastRowID = -1;
     var job = schedule.scheduleJob(
-        '*/5 * * * * *', // 주기 (5분마다)
+        '*/5 * * * *', // 주기 (5분마다)
     function() {
         var sql = 'select * from backup order by id desc limit 1';
         conn.query(sql, (err, row) => {
