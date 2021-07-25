@@ -61,29 +61,21 @@ io.on("connection", (socket) => {
         'test.backup',
         function (oldRow, newRow, event) {
         if (oldRow === null) {
+
             var sql = 'select * from backup order by id desc limit 1';
             conn.query(sql, (err, row) => {
                 if (err) {
                     console.log(err);
                 } else {
-                    if (lastRowID != row[0].id) {
-                        lastRowID = row[0].id;
-                        console.log(row[0]);
-                        socket.emit("outlierData", row[0]);
-                    } else {
-                        console.log('not update database');
-                    }
+                    socket.emit("outlierData", row[0]);
+                  //  console.log(row[0]);
                 }
             });
-        }
-       
-        if (newRow === null) {
-        }
-       
-        if (oldRow !== null && newRow !== null) {
-        }
-       
-        }, 
+
+            //console.log(newRow.changedColumns); // []
+          }
+
+        },
         'Active'
     );
 });
