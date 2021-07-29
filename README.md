@@ -10,18 +10,31 @@
 
     Ajax Fetch API로 수정 / 조회한 데이터 chart로 출력 추가 / 로그인 기능 추가 / session 관리  
     
-#### project ver.3.1 (2021-07-22) ----- [ver.3 블로그 이동](https://seohyun-kim.github.io/CCTV-ver.3/)  
+#### project ver.3 (2021-07-22) ----- [ver.3 블로그 이동](https://seohyun-kim.github.io/CCTV-ver.3/)  
 
 ``` 
 백엔드에서 감시 중 데이터 급증 시 사용자에게 알람기능 제공
 ```
 
+#### project ver.3.1  (2021-07-29)  ----- [ver.3.1 FeedBack](https://seohyun-kim.github.io/CCTV.ver.3.1(feedback)/)  / [ver.3 그누보드 적용](https://seohyun-kim.github.io/gnuboard/)
+```
+trigger query 수정 / mysql-events 사용
+그누보드 게시판 오픈소스 적용해보고 호환성 체크  
+```
+
 
 <br />  
 
-📌 목표  
-#### project ver.3.2  (~2021-07-29)  
+📌 목표  (2021-08-12)
+
 ```
-그누보드 게시판 오픈소스 적용해보고 호환성 체크  
+실제 데이터로 페이지 설계
+ - 로그인 세션, 데이터 분석 등등
+ 
+영상팀에서 호출할 수 있는 API 생성
+ - 인증절차 삽입
+ 
+(AWS없이 리눅스 서버에 구축하게 될 예정)
 ```
+
    
