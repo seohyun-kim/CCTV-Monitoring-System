@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Data Send Page</title>
+
+    </head>
+    <body>
+        <h1>Date Send</h1>
+        
+        start Time
+        end Time
+        image file
+        people
+        car
+        motorcycle
+        
+
+        <div>
+            Start Time: <input id='startTime' type='datetime-local'>
+            ~ End Time<input id='endTime' type='datetime-local'> <br>
+            Select Image: <input id="img" type="file" accept="image/*"> <br>
+            People Number: <input id="peopleNum" type="number"><br>
+            Car Number: <input id="carNum" type="number"><br>
+            motorcycle Number: <input id="motocycleNum" type="number">
+        </div>
+
+        <script>
+           for (i = 0; i < 24; i++) {
+                setValueSelectById('selectStartTime', i);
+                setValueSelectById('selectEndTime', i);                
+            }
+            var now = new Date().toISOString().split('T')[0];
+            console.log(now);
+            $("#selectStartDate").attr('value', now);
+            $("#selectEndDate").attr('value', now);
+        </script>
+    </body>
+</html>

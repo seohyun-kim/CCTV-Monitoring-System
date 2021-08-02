@@ -37,7 +37,7 @@ app.use(session({
 }));
 
 // server 생성
-var port = 3000;
+var port = 8080;
 const server = app.listen(port, () => {
     console.log(`start app listening at http://localhost:${port}`)
 });
@@ -220,6 +220,11 @@ app.post('/mainPage/logout', (req, res) => {
     res.redirect('/login');
 });
 
+
+// Data Send API
+app.get('/dataSendPage', (req, res) => {
+    res.render('./dataSendPage.ejs');
+})
 
 // Create Sample Data
 app.get('/createSampleData', (req, res) => {
