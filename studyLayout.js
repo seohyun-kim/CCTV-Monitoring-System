@@ -1,6 +1,9 @@
 const express = require('express');
+const path = require('path');
+
 const app = express();
 app.set('view engine', 'ejs');
+app.use(express.static(path.join(__dirname+'/views/images')));
 
 var port = 8080;
 app.listen(port, () => {
@@ -8,5 +11,5 @@ app.listen(port, () => {
 });
 
 app.get('/', (req, res) => {
-    res.render('studyLayout.ejs');
+    res.render(path.join(__dirname + '/views/studyLayout.ejs'));
 });

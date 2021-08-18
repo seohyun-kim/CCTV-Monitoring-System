@@ -1,26 +1,69 @@
 <!DOCTYPE html>
 <html>
     <head>
-
+        <style>
+            img {
+                max-width: 50px;
+                height: auto;
+            }
+            button {
+                width:100px;
+                background-color: #3A6EAE;
+                border-radius:20px 20px 0px 0px;
+                border: none;
+                color:#fff;
+                padding: 15px 0;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 15px;
+                margin: 4px;
+                cursor: pointer;
+            }
+            #section {
+                display:inline-block;
+            }
+            #header {
+                text-align: center;
+                background-color: #767676;
+            }
+        </style>
     </head>
     <body>
-        <div id="header"></div>
+        <div id="header">
+            <img src="camera.png">
+            <h2 style="color:#fff; margin: 0;">CCTV 모니터링 시스템</h2>
+            <div style="text-align: right;">
+                <img src="logo.png">
+            </div>
+        </div>
         <div id="section">
-            <div id="realTimeData">
-                <p style="text-decoration:underline">실시간 데이터</p>
-                <div style="border:1px solid">
-                    <img><br>
+            <div id="realTimeData" sytle="backgroud-color:#FFFFF0" style="display:inline-block">
+                <p style="text-align: center">실시간 데이터</p>
+                <div style="border:1px solid; text-align: center;">
+                    <img src="people.png" alt="people image"><br>
                     <p id="rtPeopleNum"></p>
-                    <img><br>
+                    <img src="car.png"><br>
                     <p id="rtPeopleNum"></p>
-                    <img><br>
+                    <img src="bicycle.png"><br>
                     <p id="rtPeopleNum"></p>
-                    <img><br>
+                    <img src="truck.png"><br>
                     <p id="rtPeopleNum"></p>
-                    <p>현재 차량 수: 총 ~~~대</p>
+                    <p style="text-align: center">합계: ~~~대</p>
                 </div>
             </div>
-            <div id="showData"></div>
+            <div id="showDayData" style="display:inline-block; ">
+                <div id="button">
+                    <button>일간통계</button>
+                    <button>주간통계</button>
+                </div>
+                <div style="border:10px #3A6EAE solid; padding:10px;">
+
+                </div>
+            </div>
+            <div id="showPeriodData">
+
+            </div>
         </div>
     </body>
 </html>
