@@ -9,23 +9,30 @@
             button {
                 width:100px;
                 background-color: #3A6EAE;
-                border-radius:20px 20px 0px 0px;
+                border-radius:15px 15px 0px 0px;
                 border: none;
                 color:#fff;
-                padding: 15px 0;
+                padding: 10px 0;
                 text-align: center;
                 text-decoration: none;
                 display: inline-block;
                 font-size: 15px;
-                margin: 4px;
+                margin: 0;
                 cursor: pointer;
             }
-            #section {
-                display:inline-block;
+            div {
+                background-color:aqua;
             }
+
             #header {
                 text-align: center;
                 background-color: #767676;
+            }
+            #section {
+                margin: 10px;
+            }
+            #realTimeData > div > p {
+                margin: 0;
             }
         </style>
     </head>
@@ -38,31 +45,45 @@
             </div>
         </div>
         <div id="section">
-            <div id="realTimeData" sytle="backgroud-color:#FFFFF0" style="display:inline-block">
+            <div id="realTimeData" style="display:inline-block; width:8%;">
                 <p style="text-align: center">실시간 데이터</p>
-                <div style="border:1px solid; text-align: center;">
+                <div id="showRTData" style="border:1px solid; text-align: center;">
                     <img src="people.png" alt="people image"><br>
-                    <p id="rtPeopleNum"></p>
+                    <p id="rtPeopleNum">1</p>
                     <img src="car.png"><br>
-                    <p id="rtPeopleNum"></p>
+                    <p id="rtPeopleNum">1</p>
                     <img src="bicycle.png"><br>
-                    <p id="rtPeopleNum"></p>
+                    <p id="rtPeopleNum">1</p>
                     <img src="truck.png"><br>
-                    <p id="rtPeopleNum"></p>
+                    <p id="rtPeopleNum">1</p>
                     <p style="text-align: center">합계: ~~~대</p>
                 </div>
             </div>
-            <div id="showDayData" style="display:inline-block; ">
-                <div id="button">
-                    <button>일간통계</button>
-                    <button>주간통계</button>
+            <div id="showDayData" style="display:inline-block; vertical-align:top; width:91%">
+                <div class="button">
+                    <button style="text-decoration: underline #CC9F3C 3px; text-underline-position: under;">일간통계</button>
+                    <button style="background-color: #999999;">주간통계</button>
                 </div>
-                <div style="border:10px #3A6EAE solid; padding:10px;">
-
+                <div style="border:10px #3A6EAE solid; background-color: #3A6EAE; padding:10px; display:inline-block;">
+                    <form class="setPeriod" style="background-color: #fff; border-radius:5px; padding: 5px; margin: 5px;">
+                        <input type="date" style="vertical-align: middle; margin: 3px 10px;">
+                        <input type="button" value="Submit" style="border:1px solid; margin:2px; vertical-align:middle; margin: 3px 10px; background-color:#fff; cursor:pointer; border-radius:4px;">
+                    </form>
+                    <div style="background-color: #fff; border-radius:5px; padding: 5px; margin: 5px;">
+                        
+                    </div>
                 </div>
             </div>
-            <div id="showPeriodData">
+            <div id="showPeriodData" style="display:none;">
+                <div class="button">
+                    <button style="text-decoration: underline #CC9F3C 3px; text-underline-position: under;">일간통계</button>
+                    <button style="background-color: #999999;">주간통계</button>
+                </div>
+                <div style="border:10px #3A6EAE solid; background-color: #3A6EAE; padding:10px; display:inline-block;">
+                    <div class="setPeriod" style="background-color: #fff;">
 
+                    </div>
+                </div>
             </div>
         </div>
     </body>
