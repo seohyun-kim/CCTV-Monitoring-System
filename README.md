@@ -8,15 +8,35 @@
   
 #### project ver.2.2  (2021-07-15) ----- [ver.2.2 블로그 이동](https://seohyun-kim.github.io/CCTV_ver.2.2/)  
 
-    Ajax대신 Fetch API로 수정 / 조회한 데이터 chart로 출력 추가 / 로그인 기능 추가 / session 관리
+    Ajax Fetch API로 수정 / 조회한 데이터 chart로 출력 추가 / 로그인 기능 추가 / session 관리  
+    
+#### project ver.3 (2021-07-22) ----- [ver.3 블로그 이동](https://seohyun-kim.github.io/CCTV-ver.3/)  
+
+``` 
+백엔드에서 감시 중 데이터 급증 시 사용자에게 알람기능 제공
+```
+
+#### project ver.3.1  (2021-07-29)  ----- [ver.3.1 FeedBack](https://seohyun-kim.github.io/CCTV.ver.3.1(feedback)/)  / [ver.3 그누보드 적용](https://seohyun-kim.github.io/gnuboard/)
+```
+trigger query 수정 / mysql-events 사용
+그누보드 게시판 오픈소스 적용해보고 호환성 체크  
+```
+
+#### project ver.4.1  (2021-08-05)  ----- [ver.4.1 블로그 이동](https://seohyun-kim.github.io/CCTV.ver.4.1/) 
+```
+ 일별, 요일별, 월간, 등등 통계치에 대한 대표값을 보여주는 테이블들 생성 (event scheduler)
+ 통계 테이블 데이터를 이용해 이상값 탐지 trigger
+ 리눅스 서버 환경 구축
+```
+
 
 <br />  
 
 📌 목표  
-#### project ver.3  (~2021-07-29)  
+
 ```
-통행량 급증 시 알람기능 제공 (백엔드에서 데이터 감시)  
-웹 소켓에 대해 공부  
-그누보드 게시판 오픈소스 적용해보고 호환성 체크  
+실제 데이터로 페이지 설계
+ - 로그인 세션, 데이터 분석 등등
 ```
+
    

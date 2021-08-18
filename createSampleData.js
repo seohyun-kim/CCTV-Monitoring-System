@@ -11,7 +11,7 @@ var conn = mysql.createConnection({
 conn.connect();
 
 var job = schedule.scheduleJob(
-    '*/5 * * * *', // 주기 (5분마다)
+    '0/5 * * * * ?', // 주기 (5분마다)----5초 테스트
 function() {
     var data = createData(5*60);
     var sql = 'INSERT into test(start_date, end_date, people, vehicle) value (?, ?, ?, ?)';
