@@ -34,7 +34,36 @@
             #realTimeData > div > p {
                 margin: 0;
             }
+            .carData > div > div > div > div{
+                display:inline-block;
+            }
+            .carData > div > img,
+            .carData > div > p {
+                display:inline-block;
+            }
         </style>
+        <script>
+            function btnDayCallback() {
+                const clickedStyle = "text-decoration: underline #CC9F3C 3px; text-underline-position: under;";
+                const nonClickedStyle = "background-color: #999999;";
+                const day = document.getElementsByClassName("btnDay");
+                const period = document.getElementsByClassName("btnPeriod");
+                document.getElementById("showPeriodData").style.display = "inline-block";
+                document.getElementById("showDayData").style.display = "none";
+                day[0].style = clickedStyle;
+                period[0].style = nonClickedStyle;                
+            }
+            function btnPeriodCallback() {
+                const clickedStyle = "text-decoration: underline #CC9F3C 3px; text-underline-position: under;";
+                const nonClickedStyle = "background-color: #999999;";
+                const day = document.getElementsByClassName("btnDay");
+                const period = document.getElementsByClassName("btnPeriod");
+                document.getElementById("showPeriodData").style.display = "none";
+                document.getElementById("showDayData").style.display = "inline-block";
+                day[0].style = nonClickedStyle;
+                period[0].style = clickedStyle;      
+            }
+        </script>
     </head>
     <body>
         <div id="header">
@@ -60,9 +89,9 @@
                 </div>
             </div>
             <div id="showDayData" style="display:inline-block; vertical-align:top; width:91%">
-                <div class="button">
-                    <button style="text-decoration: underline #CC9F3C 3px; text-underline-position: under;">일간통계</button>
-                    <button style="background-color: #999999;">주간통계</button>
+                <div>
+                    <button class="btnDay" onclick="btnDayCallback()" style="text-decoration: underline #CC9F3C 3px; text-underline-position: under;">일간통계</button>
+                    <button class="btnPeriod" onclick="btnPeriodCallback()" style="background-color: #999999;">주간통계</button>
                 </div>
                 <div style="border:10px #3A6EAE solid; background-color: #3A6EAE; padding:10px; display:inline-block;">
                     <form class="setPeriod" style="background-color: #fff; border-radius:5px; padding: 5px; margin: 5px;">
@@ -70,18 +99,192 @@
                         <input type="button" value="Submit" style="border:1px solid; margin:2px; vertical-align:middle; margin: 3px 10px; background-color:#fff; cursor:pointer; border-radius:4px;">
                     </form>
                     <div style="background-color: #fff; border-radius:5px; padding: 5px; margin: 5px;">
-                        
+                        <div id="dayGraph" style="display:inline-block; padding: 5px;">
+
+                        </div>
+                        <div style="display:inline-block;">
+                            <p>차량 DATA</p>
+                            <div class="carData" style="border:1px solid; border-radius: 5px; padding: 5px;">
+                                <div>
+                                    그래프(위로정렬)
+                                    <div style="display:inline-block;">
+                                        <p>승용차:  ~~대</p>
+                                        <p>자전거:  ~~대</p>
+                                        <p>오토바이: ~~대</p>
+                                        <p>트럭:    ~~대</p>
+                                    </div>
+                                    <div style="text-align: center; display:inline-block;">
+                                        <img src="speedometer.png">
+                                        <p>평균속도: ~~km/h</p>
+                                        <div>
+                                            <div>
+                                                <img src="car.png">
+                                                <p>~~</p>
+                                            </div>
+                                            <div>
+                                                <img src="bicycle.png">
+                                                <p>~~</p>
+                                            </div>
+                                            <div>
+                                                <img src="motorcycle.png">
+                                                <p>~~</p>
+                                            </div>
+                                            <div>
+                                                <img src="truck.png">
+                                                <p>~~</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <img src="parking.png">
+                                    <p>주차: ~~대</p>
+                                    <p>정차: ~~대</p>
+                                    <img src="turn-left.png">
+                                    <p>~~회</p>
+                                    <img src="turn-left.png" style="-moz-transform: scaleX(-1); -o-transform: scaleX(-1); -webkit-transform: scaleX(-1); transform: scaleX(-1);">
+                                    <p>~~회</p>
+                                    <img src="straight-ahead.png">
+                                </div>
+                            </div>
+                            <p>사람 DATA</p>
+                            <div class="peopleData" style="border:1px solid; border-radius: 5px; padding: 5px;">
+                                <div style="display: inline-block">
+                                    <p>건물출입관리</p>
+                                    <div style="display: inline-block">
+                                        <img src="court-house.png">
+                                        <p>27호관</p>
+                                        <p>출: ~</p>
+                                        <p>입: ~</p>
+                                    </div>
+                                    <div style="display: inline-block">
+                                        <img src="parking.png">
+                                        <p>주차장</p>
+                                        <p>출: ~</p>
+                                        <p>입: ~</p>
+                                    </div>
+                                    <div style="display: inline-block">
+                                        <img src="flask.png">
+                                        <p>9호관</p>
+                                        <p>출: ~</p>
+                                        <p>입: ~</p>
+                                    </div>
+                                </div>
+                                <div style="display: inline-block">
+                                    <p>이동경로</p>
+                                    <br>
+                                    <p>ROOT A : ~회</p>
+                                    <p>ROOT B : ~회</p>
+                                    <p>ROOT C : ~회</p>
+                                    <p>ROOT D : ~회</p>
+                                </div>
+                                <div style="display: inline-block; text-align: center;">
+                                    <img src="walkway.png">
+                                    <p>사람: ~~명</p>
+                                    <p>평균 속도:~km/h</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div id="showPeriodData" style="display:none;">
-                <div class="button">
-                    <button style="text-decoration: underline #CC9F3C 3px; text-underline-position: under;">일간통계</button>
-                    <button style="background-color: #999999;">주간통계</button>
+            <div id="showPeriodData" style="display:none; vertical-align:top; width:91%;">
+                <div>
+                    <button class="btnDay" onclick="btnDayCallback()" style="text-decoration: underline #CC9F3C 3px; text-underline-position: under;">일간통계</button>
+                    <button class="btnPeriod" onclick="btnPeriodCallback()" style="background-color: #999999;">주간통계</button>
                 </div>
                 <div style="border:10px #3A6EAE solid; background-color: #3A6EAE; padding:10px; display:inline-block;">
-                    <div class="setPeriod" style="background-color: #fff;">
+                    <form class="setPeriod" style="background-color: #fff; border-radius:5px; padding: 5px; margin: 5px;">
+                        <input type="date" style="vertical-align: middle; margin: 3px 10px;">
+                        <input type="button" value="Submit" style="border:1px solid; margin:2px; vertical-align:middle; margin: 3px 10px; background-color:#fff; cursor:pointer; border-radius:4px;">
+                    </form>
+                    <div style="background-color: #fff; border-radius:5px; padding: 5px; margin: 5px;">
+                        <div id="dayGraph" style="display:inline-block; padding: 5px;">
 
+                        </div>
+                        <div style="display:inline-block;">
+                            <p>차량 DATA</p>
+                            <div class="carData" style="border:1px solid; border-radius: 5px; padding: 5px;">
+                                <div>
+                                    그래프(위로정렬)
+                                    <div style="display:inline-block;">
+                                        <p>승용차:  ~~대</p>
+                                        <p>자전거:  ~~대</p>
+                                        <p>오토바이: ~~대</p>
+                                        <p>트럭:    ~~대</p>
+                                    </div>
+                                    <div style="text-align: center; display:inline-block;">
+                                        <img src="speedometer.png">
+                                        <p>평균속도: ~~km/h</p>
+                                        <div>
+                                            <div>
+                                                <img src="car.png">
+                                                <p>~~</p>
+                                            </div>
+                                            <div>
+                                                <img src="bicycle.png">
+                                                <p>~~</p>
+                                            </div>
+                                            <div>
+                                                <img src="motorcycle.png">
+                                                <p>~~</p>
+                                            </div>
+                                            <div>
+                                                <img src="truck.png">
+                                                <p>~~</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <img src="parking.png">
+                                    <p>주차: ~~대</p>
+                                    <p>정차: ~~대</p>
+                                    <img src="turn-left.png">
+                                    <p>~~회</p>
+                                    <img src="turn-left.png" style="-moz-transform: scaleX(-1); -o-transform: scaleX(-1); -webkit-transform: scaleX(-1); transform: scaleX(-1);">
+                                    <p>~~회</p>
+                                    <img src="straight-ahead.png">
+                                </div>
+                            </div>
+                            <p>사람 DATA</p>
+                            <div class="peopleData" style="border:1px solid; border-radius: 5px; padding: 5px;">
+                                <div style="display: inline-block">
+                                    <p>건물출입관리</p>
+                                    <div style="display: inline-block">
+                                        <img src="court-house.png">
+                                        <p>27호관</p>
+                                        <p>출: ~</p>
+                                        <p>입: ~</p>
+                                    </div>
+                                    <div style="display: inline-block">
+                                        <img src="parking.png">
+                                        <p>주차장</p>
+                                        <p>출: ~</p>
+                                        <p>입: ~</p>
+                                    </div>
+                                    <div style="display: inline-block">
+                                        <img src="flask.png">
+                                        <p>9호관</p>
+                                        <p>출: ~</p>
+                                        <p>입: ~</p>
+                                    </div>
+                                </div>
+                                <div style="display: inline-block">
+                                    <p>이동경로</p>
+                                    <br>
+                                    <p>ROOT A : ~회</p>
+                                    <p>ROOT B : ~회</p>
+                                    <p>ROOT C : ~회</p>
+                                    <p>ROOT D : ~회</p>
+                                </div>
+                                <div style="display: inline-block; text-align: center;">
+                                    <img src="walkway.png">
+                                    <p>사람: ~~명</p>
+                                    <p>평균 속도:~km/h</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
